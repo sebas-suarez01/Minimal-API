@@ -1,0 +1,22 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Minimal_API.Domain.Primitives;
+using Minimal_API.Domain.Users;
+using Minimal_API.Persistance.Configurations;
+
+namespace Minimal_API.Persistance;
+
+public class AgencyDbContext : DbContext
+{
+    public AgencyDbContext(DbContextOptions options) : base(options)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserModelConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(RoleModelConfiguration).Assembly);
+
+    }
+}
