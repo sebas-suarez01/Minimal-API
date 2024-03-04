@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Minimal_API.Application.Interfaces;
 
 namespace Minimal_API.Application;
 
@@ -10,7 +11,7 @@ public static class DependencyInjection
         {
             cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
         });
-
+        
         return services;
     }
 }

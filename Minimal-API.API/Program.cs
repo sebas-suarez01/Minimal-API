@@ -1,3 +1,4 @@
+using Minimal_API.API.Endpoints;
 using Minimal_API.Application;
 using Minimal_API.Infrastructure;
 using Minimal_API.Persistance;
@@ -30,5 +31,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapUserEndpoints();
 
 app.Run();

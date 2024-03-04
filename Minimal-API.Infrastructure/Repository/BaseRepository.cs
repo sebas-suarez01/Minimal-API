@@ -1,38 +1,39 @@
-﻿using Minimal_API.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Minimal_API.Application.Interfaces;
+using Minimal_API.Domain.Errors;
 using Minimal_API.Domain.Primitives;
 using Minimal_API.Domain.Shared;
 using Minimal_API.Persistance;
 
 namespace Minimal_API.Infrastructure.Repository;
 
-public class BaseRepository<T, TId, TDto> : IRepository<T, TId, TDto>
-    where T: Entity<TId>
-    where TId: ValueObjectId
+public class BaseRepository<T, TId> : IRepository<T, TId>
+    where T : Entity<TId>
+    where TId : ValueObjectId
 {
-    private readonly AgencyDbContext _context;
+    protected readonly AgencyDbContext _context;
 
     public BaseRepository(AgencyDbContext context)
     {
         _context = context;
     }
 
-    public Task<Result<IEnumerable<TDto>>> GetAllAsync()
+    public async Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var entity = await _context.Set<T>().SingleOrDefaultAsync(cancellationToken);
+
+        if (entity is null)
+            return Result.Failure(ErrorTypes.Models.IdNotFound(id));
+
+        entity.IsDeleted = true;
+
+        return Result.Success();
     }
 
-    public Task<Result<TDto>> GetByIdAsync(Guid id)
+    public async Task<Result<Guid>> CreateAsync(T model, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
-    }
+        await _context.Set<T>().AddAsync(model, cancellationToken);
 
-    public Task<Result> DeleteAsync(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Result<Guid>> Create(T model)
-    {
-        throw new NotImplementedException();
+        return model.Id.Value;
     }
 }
