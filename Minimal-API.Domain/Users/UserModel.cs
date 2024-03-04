@@ -29,7 +29,7 @@ public class UserModel : Entity<UserId>
     public string PasswordHash { get; private set; }
     public int? PhoneNumber { get; private set; }
     public bool EmailConfirmed { get; private set; }
-    public RoleModel Role { get; private set; }
+    public RoleModel Role { get; set; }
 
     public void ConfirmEmail()
     {

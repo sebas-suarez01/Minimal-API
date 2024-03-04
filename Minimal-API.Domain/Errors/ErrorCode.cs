@@ -15,5 +15,7 @@ public class ErrorCode
     public const string Validation = "Model.Validation";
     public const string Internal = "Error.SomethingOcurred";
     public const string Transaction = "Error.TransactionFailed";
+    public const string RoleNotFound = "RoleModel.RoleNotFound";
+
 
 }

@@ -48,4 +48,27 @@ public class UserRepository : BaseRepository<UserModel, UserId>, IUserRepository
                 new RoleDto(user.Role.Name))
             : Result.Failure<UserDto>(ErrorTypes.Models.IdNotFound(id));
     }
+
+    public async Task<Result> ChangeRoleAsync(Guid id, string roleName)
+    {
+        var user = await _context.Set<UserModel>()
+            .Include(u => u.Role)
+            .SingleOrDefaultAsync(u => u.Id == ValueObjectId.Create<UserId>(id));
+        
+        if (user is null)
+        {
+            return Result.Failure(ErrorTypes.Models.IdNotFound(id));
+        }
+
+        var role = await _context.Set<RoleModel>().SingleOrDefaultAsync(u => u.Name.ToLower() == roleName.ToLower());
+
+        if (role is null)
+        {
+            return Result.Failure(ErrorTypes.Models.RoleNotFound(roleName));
+        }
+
+        user.Role = role;
+        
+        return Result.Success();
+    }
 }

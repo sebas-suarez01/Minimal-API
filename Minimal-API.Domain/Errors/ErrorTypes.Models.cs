@@ -13,5 +13,11 @@ public static partial class ErrorTypes
             HttpStatusCode.NotFound,
             ErrorCode.IdNotFound,
             $"Id: {id.ToString()} does not exist");
+        
+        public static Error RoleNotFound(string name)
+            => new(
+                HttpStatusCode.NotFound,
+                ErrorCode.RoleNotFound,
+                $"Role: {name} does not exist");
     }
 }
