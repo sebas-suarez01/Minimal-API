@@ -19,5 +19,16 @@ public static partial class ErrorTypes
                 HttpStatusCode.NotFound,
                 ErrorCode.RoleNotFound,
                 $"Role: {name} does not exist");
+        public static Error UserNotFound(string username)
+            => new(
+                HttpStatusCode.NotFound,
+                ErrorCode.UsernameNotFound,
+                $"Username: {username} does not exist");
+        
+        public static Error PasswordAndConfirmNotMatch(string password, string confirmPassword)
+            => new(
+                HttpStatusCode.Conflict,
+                ErrorCode.PasswordAndConfirmNotMatch,
+                $"Password: {password} Confirm Password : {confirmPassword} do not match");
     }
 }

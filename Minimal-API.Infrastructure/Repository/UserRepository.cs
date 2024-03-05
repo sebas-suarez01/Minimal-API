@@ -49,12 +49,52 @@ public class UserRepository : BaseRepository<UserModel, UserId>, IUserRepository
             : Result.Failure<UserDto>(ErrorTypes.Models.IdNotFound(id));
     }
 
+    public async Task<Result<UserDto>> GetByUsernameAsync(string username,
+        CancellationToken cancellationToken = default)
+    {
+        var user = await _context.Set<UserModel>()
+            .Include(u => u.Role)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(u => u.Username == username, cancellationToken);
+
+        return user is not null
+            ? new UserDto(
+                user.Id,
+                user.Username,
+                user.Name,
+                user.LastName,
+                user.Email,
+                user.PasswordHash,
+                user.PhoneNumber,
+                new RoleDto(user.Role.Name))
+            : Result.Failure<UserDto>(ErrorTypes.Models.UserNotFound(username));
+    }
+
+    public async Task<Result<UserDto>> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var user = await _context.Set<UserModel>()
+            .Include(u => u.Role)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
+
+        return user is not null
+            ? new UserDto(
+                user.Id,
+                user.Username,
+                user.Name,
+                user.LastName,
+                user.Email,
+                user.PasswordHash,
+                user.PhoneNumber,
+                new RoleDto(user.Role.Name))
+            : Result.Failure<UserDto>(ErrorTypes.Models.UserNotFound(email));
+    }
     public async Task<Result> ChangeRoleAsync(Guid id, string roleName)
     {
         var user = await _context.Set<UserModel>()
             .Include(u => u.Role)
             .SingleOrDefaultAsync(u => u.Id == ValueObjectId.Create<UserId>(id));
-        
+
         if (user is null)
         {
             return Result.Failure(ErrorTypes.Models.IdNotFound(id));
@@ -68,7 +108,7 @@ public class UserRepository : BaseRepository<UserModel, UserId>, IUserRepository
         }
 
         user.Role = role;
-        
+
         return Result.Success();
     }
 }

@@ -11,7 +11,7 @@ public class ErrorCode
     public const string UsernameNotFound = "Auth.UsernameNotFound";
     public const string DuplicateUsername = "Auth.DuplicateUsername";
     public const string InvalidCredentials = "Auth.InvalidCredentials";
-    public const string InvalidPassword = "Auth.InvalidPassword";
+    public const string PasswordAndConfirmNotMatch = "Auth.PasswordAndConfirmNotMatch";
     public const string Validation = "Model.Validation";
     public const string Internal = "Error.SomethingOcurred";
     public const string Transaction = "Error.TransactionFailed";
