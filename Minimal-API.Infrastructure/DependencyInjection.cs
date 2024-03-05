@@ -9,6 +9,8 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IAuthRepository, AuthRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
