@@ -5,7 +5,7 @@ using Minimal_API.Domain.Users;
 
 namespace Minimal_API.Application.Users.Queries.GetAllUsers;
 
-public class GetAllUsersQueryHandler : IQueryHandler<GetAllUsersQuery, IEnumerable<UserDto>>
+internal sealed class GetAllUsersQueryHandler : IQueryHandler<GetAllUsersQuery, IEnumerable<UserDto>>
 {
     private readonly IUserRepository _repository;
 

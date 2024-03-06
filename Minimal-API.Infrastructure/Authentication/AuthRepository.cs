@@ -11,11 +11,13 @@ public class AuthRepository : IAuthRepository
 {
     private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
+    private readonly IJwtProvider _jwtProvider;
 
-    public AuthRepository(IUserRepository userRepository, IRoleRepository roleRepository)
+    public AuthRepository(IUserRepository userRepository, IRoleRepository roleRepository, IJwtProvider jwtProvider)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
+        _jwtProvider = jwtProvider;
     }
 
     public async Task<Result<Guid>> Register(RegisterModel registerModel, RoleEnum roleValue = RoleEnum.User)
@@ -40,7 +42,8 @@ public class AuthRepository : IAuthRepository
             return Result.Failure<Guid>(userDtoResult.Errors[0]);
         }
         
-        var passwordhash = "";
+        var passwordhash = BCrypt.Net.BCrypt.HashPassword(registerModel.Password);
+        
         var user = UserModel.Create(registerModel.Username, registerModel.Name, registerModel.LastName,
             registerModel.Email, passwordhash, registerModel.PhoneNumber);
 
@@ -53,8 +56,24 @@ public class AuthRepository : IAuthRepository
         return id;
     }
 
-    public Task Login(LoginModel loginModel)
+    public async Task<Result<string>> Login(LoginModel loginModel)
     {
-        throw new NotImplementedException();
+        var userDtoResult = await _userRepository.GetByUsernameAsync(loginModel.Username);
+        
+        if (userDtoResult.IsFailure)
+        {
+            return Result.Failure<string>(ErrorTypes.Models.InvalidCredentials());
+        }
+
+        bool isCorrectPassword = BCrypt.Net.BCrypt.Verify(loginModel.Password, userDtoResult.Value.PasswordHash);
+
+        if (!isCorrectPassword)
+        {
+            return Result.Failure<string>(ErrorTypes.Models.InvalidCredentials());
+        }
+
+        var token = _jwtProvider.Generate(userDtoResult.Value);
+
+        return token;
     }
 }

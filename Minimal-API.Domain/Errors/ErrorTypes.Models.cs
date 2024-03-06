@@ -30,5 +30,10 @@ public static partial class ErrorTypes
                 HttpStatusCode.Conflict,
                 ErrorCode.PasswordAndConfirmNotMatch,
                 $"Password: {password} Confirm Password : {confirmPassword} do not match");
+        public static Error InvalidCredentials()
+            => new(
+                HttpStatusCode.Unauthorized,
+                ErrorCode.InvalidCredentials,
+                $"Invalid Credentials");
     }
 }

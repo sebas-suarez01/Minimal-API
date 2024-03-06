@@ -7,5 +7,5 @@ namespace Minimal_API.Application.Interfaces;
 public interface IAuthRepository
 {
     public Task<Result<Guid>> Register(RegisterModel registerModel, RoleEnum role = RoleEnum.User);
-    public Task Login(LoginModel loginModel);
+    public Task<Result<string>> Login(LoginModel loginModel);
 }

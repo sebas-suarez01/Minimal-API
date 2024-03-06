@@ -48,7 +48,6 @@ public class UserRepository : BaseRepository<UserModel, UserId>, IUserRepository
                 new RoleDto(user.Role.Name))
             : Result.Failure<UserDto>(ErrorTypes.Models.IdNotFound(id));
     }
-
     public async Task<Result<UserDto>> GetByUsernameAsync(string username,
         CancellationToken cancellationToken = default)
     {
@@ -69,7 +68,6 @@ public class UserRepository : BaseRepository<UserModel, UserId>, IUserRepository
                 new RoleDto(user.Role.Name))
             : Result.Failure<UserDto>(ErrorTypes.Models.UserNotFound(username));
     }
-
     public async Task<Result<UserDto>> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         var user = await _context.Set<UserModel>()

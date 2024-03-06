@@ -4,7 +4,7 @@ using Minimal_API.Domain.Shared;
 
 namespace Minimal_API.Application.Users.Commands.ChangeUserRole;
 
-public class ChangeUserRoleCommandHandler : ICommandHandler<ChangeUserRoleCommand>
+internal sealed class ChangeUserRoleCommandHandler : ICommandHandler<ChangeUserRoleCommand>
 {
     private readonly IUserRepository _repository;
 

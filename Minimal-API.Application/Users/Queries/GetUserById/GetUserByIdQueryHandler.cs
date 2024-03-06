@@ -5,7 +5,7 @@ using Minimal_API.Domain.Users;
 
 namespace Minimal_API.Application.Users.Queries.GetUserById;
 
-public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserDto>
+internal sealed class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserDto>
 {
     private readonly IUserRepository _repository;
 
