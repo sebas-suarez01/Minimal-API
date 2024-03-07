@@ -2,6 +2,7 @@
 using Minimal_API.Domain.Primitives;
 using Minimal_API.Domain.Users;
 using Minimal_API.Persistance.Configurations;
+using Minimal_API.Persistance.Seeds;
 
 namespace Minimal_API.Persistance;
 
@@ -17,6 +18,8 @@ public class AgencyDbContext : DbContext
         
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserModelConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RoleModelConfiguration).Assembly);
+        
+        modelBuilder.SeedRoles();
 
     }
 }

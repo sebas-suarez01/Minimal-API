@@ -26,7 +26,7 @@ public class RoleModelConfiguration : IEntityTypeConfiguration<RoleModel>
         
         builder.HasIndex(r => r.Name).IsUnique();
         builder.HasIndex(r => r.NormalizedName).IsUnique();
-
+    
         builder.HasMany(r => r.Users)
             .WithOne(u => u.Role)
             .OnDelete(DeleteBehavior.NoAction);

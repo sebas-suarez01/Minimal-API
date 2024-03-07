@@ -6,6 +6,7 @@ using Minimal_API.Application.Users.Queries.GetAllUsers;
 using Minimal_API.Application.Users.Queries.GetUserByEmail;
 using Minimal_API.Application.Users.Queries.GetUserById;
 using Minimal_API.Application.Users.Queries.GetUserByUsername;
+using Minimal_API.Domain.Roles.Shared;
 
 namespace Minimal_API.API.Endpoints;
 
@@ -15,7 +16,8 @@ public static class UsersEndpoints
     {
         app.MapGet("api/users", GetAllUsers)
             .WithName(nameof(GetAllUsers))
-            .WithDisplayName(nameof(GetAllUsers));
+            .WithDisplayName(nameof(GetAllUsers))
+            .RequireAuthorization();
         
         app.MapGet("api/users/{id:Guid}", GetUserById)
             .WithName(nameof(GetUserById))

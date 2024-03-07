@@ -9,7 +9,8 @@ public class ErrorCode
     public const string IdsNotMatch = "Model.IdsNotMatch";
     public const string NullValue = "Error.NullValue";
     public const string UsernameNotFound = "Auth.UsernameNotFound";
-    public const string DuplicateUsername = "Auth.DuplicateUsername";
+    public const string DuplicateUsername = "Auth.DuplicateUsername";    
+    public const string DuplicateEmail = "Auth.DuplicateEmail";
     public const string InvalidCredentials = "Auth.InvalidCredentials";
     public const string PasswordAndConfirmNotMatch = "Auth.PasswordAndConfirmNotMatch";
     public const string Validation = "Model.Validation";

@@ -52,8 +52,8 @@ public class UserRepository : BaseRepository<UserModel, UserId>, IUserRepository
         CancellationToken cancellationToken = default)
     {
         var user = await _context.Set<UserModel>()
-            .Include(u => u.Role)
             .AsNoTracking()
+            .Include(u => u.Role)
             .SingleOrDefaultAsync(u => u.Username == username, cancellationToken);
 
         return user is not null
@@ -71,8 +71,8 @@ public class UserRepository : BaseRepository<UserModel, UserId>, IUserRepository
     public async Task<Result<UserDto>> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         var user = await _context.Set<UserModel>()
-            .Include(u => u.Role)
             .AsNoTracking()
+            .Include(u => u.Role)
             .SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
 
         return user is not null

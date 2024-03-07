@@ -29,8 +29,8 @@ public class RoleRepository : IRoleRepository
     public async Task<Result<RoleModel>> GetRoleByNameAsync(string name, CancellationToken cancellationToken = default)
     {
         var role = await _context.Set<RoleModel>()
-            .AsNoTracking()
-            .SingleOrDefaultAsync(r => r.Name.ToLower() == name.ToLower(), cancellationToken);
+            .Include(r=> r.Users)
+            .SingleOrDefaultAsync(r => r.Name == name, cancellationToken);
 
         return role ?? Result.Failure<RoleModel>(ErrorTypes.Models.RoleNotFound(name));
     }

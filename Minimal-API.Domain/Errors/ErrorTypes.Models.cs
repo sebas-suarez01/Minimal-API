@@ -35,5 +35,15 @@ public static partial class ErrorTypes
                 HttpStatusCode.Unauthorized,
                 ErrorCode.InvalidCredentials,
                 $"Invalid Credentials");
+        public static Error DuplicateUsername(string username)
+            => new(
+                HttpStatusCode.Conflict,
+                ErrorCode.DuplicateUsername,
+                $"Duplicated Username {username}");
+        public static Error DuplicateEmail(string email)
+            => new(
+                HttpStatusCode.Conflict,
+                ErrorCode.DuplicateUsername,
+                $"Duplicated Email {email}");
     }
 }

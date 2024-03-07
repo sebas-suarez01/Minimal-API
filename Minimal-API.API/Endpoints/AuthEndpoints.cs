@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Minimal_API.API.Requests;
+using Minimal_API.Application.Auth.Commands.Login;
 using Minimal_API.Application.Auth.Commands.Register;
-using Minimal_API.Application.Auth.Queries.Login;
 
 namespace Minimal_API.API.Endpoints;
 
@@ -13,7 +13,7 @@ public static class AuthEndpoints
         app.MapPost("api/auth/register", Register)
             .WithName(nameof(Register))
             .WithDisplayName(nameof(Register));
-        app.MapGet("api/auth/login", Login)
+        app.MapPost("api/auth/login", Login)
             .WithName(nameof(Login))
             .WithDisplayName(nameof(Login));
     }
@@ -32,7 +32,7 @@ public static class AuthEndpoints
     }
     public static async Task<IResult> Login([FromBody]LoginRequest request, ISender sender)
     {
-        var command = new LoginQuery(request.Username, request.Password);
+        var command = new LoginCommand(request.Username, request.Password);
 
         var result = await sender.Send(command);
         

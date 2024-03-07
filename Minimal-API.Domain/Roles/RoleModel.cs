@@ -25,4 +25,13 @@ public class RoleModel : Entity<RoleId>
         var id = ValueObjectId.CreateUnique<RoleId>();
         return new RoleModel(id, name);
     }
+    public static RoleModel Create(Guid id, string name)
+    {
+        var idInstance = ValueObjectId.Create<RoleId>(id);
+        var role = new RoleModel(idInstance, name)
+        {
+            CreatedUtc = new DateTime(2024, 3, 7, 12, 0, 0 , DateTimeKind.Utc)
+        };
+        return role;
+    }
 }

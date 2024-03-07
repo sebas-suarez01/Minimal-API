@@ -5,7 +5,7 @@ using Minimal_API.Domain.Roles.Shared;
 using Minimal_API.Domain.Shared;
 using Minimal_API.Domain.Users;
 
-namespace Minimal_API.Infrastructure.Repository;
+namespace Minimal_API.Infrastructure.Authentication;
 
 public class AuthRepository : IAuthRepository
 {
@@ -30,16 +30,16 @@ public class AuthRepository : IAuthRepository
         
         var userDtoResult = await _userRepository.GetByUsernameAsync(registerModel.Username);
 
-        if (userDtoResult.IsFailure)
+        if (userDtoResult.IsSuccess)
         {
-            return Result.Failure<Guid>(userDtoResult.Errors[0]);
+            return Result.Failure<Guid>(ErrorTypes.Models.DuplicateUsername(registerModel.Username));
         }
         
         userDtoResult = await _userRepository.GetByEmailAsync(registerModel.Email);
         
-        if (userDtoResult.IsFailure)
+        if (userDtoResult.IsSuccess)
         {
-            return Result.Failure<Guid>(userDtoResult.Errors[0]);
+            return Result.Failure<Guid>(ErrorTypes.Models.DuplicateEmail(registerModel.Email));
         }
         
         var passwordhash = BCrypt.Net.BCrypt.HashPassword(registerModel.Password);
@@ -53,7 +53,7 @@ public class AuthRepository : IAuthRepository
         
         var id = await _userRepository.CreateAsync(user);
         
-        return id;
+        return id.Value;
     }
 
     public async Task<Result<string>> Login(LoginModel loginModel)

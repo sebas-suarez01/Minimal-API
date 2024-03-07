@@ -15,7 +15,7 @@ public class SaveChangesBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        if (!IsNotCommand())
+        if (IsNotCommand())
         {
             return await next();
         }
@@ -24,7 +24,7 @@ public class SaveChangesBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
 
         var response = await next();
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        var result = await _unitOfWork.SaveChangesAsync(cancellationToken);
         
         transaction.Commit();
 
