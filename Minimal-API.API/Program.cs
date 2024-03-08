@@ -1,5 +1,3 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Minimal_API.API.Endpoints;
 using Minimal_API.Application;
 using Minimal_API.Infrastructure;
@@ -28,10 +26,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.UseAuthentication();
 
+app.UseAuthorization();
+
+// Endpoints
 app.MapUserEndpoints();
 app.MapAuthEndpoints();
 
