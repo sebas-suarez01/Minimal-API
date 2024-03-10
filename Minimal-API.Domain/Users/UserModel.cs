@@ -1,15 +1,16 @@
-﻿using Minimal_API.Domain.Primitives;
+﻿using Minimal_API.Domain.Permission;
+using Minimal_API.Domain.Primitives;
 using Minimal_API.Domain.Roles;
 
 namespace Minimal_API.Domain.Users;
 
-public class UserModel : Entity<UserId>
+public class UserModel : Entity<Guid>
 {
     private UserModel()
     {
     }
 
-    private UserModel(UserId id, string username, string name, string lastName, string email, string passwordHash,
+    private UserModel(Guid id, string username, string name, string lastName, string email, string passwordHash,
         int? phoneNumber)
     {
         this.Id = id;
@@ -30,6 +31,7 @@ public class UserModel : Entity<UserId>
     public int? PhoneNumber { get; private set; }
     public bool EmailConfirmed { get; private set; }
     public RoleModel Role { get; set; }
+    public List<UserPermission> UserPermissions { get; set; }
 
     public void ConfirmEmail()
     {
@@ -39,7 +41,7 @@ public class UserModel : Entity<UserId>
     public static UserModel Create(string username, string name, string lastName, string email, string passwordHash,
         int? phoneNumber)
     {
-        var id = ValueObjectId.CreateUnique<UserId>();
+        var id =Guid.NewGuid();
         return new UserModel(id, username, name, lastName, email, passwordHash, phoneNumber);
     }
 }

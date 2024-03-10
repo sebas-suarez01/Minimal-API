@@ -22,6 +22,67 @@ namespace Minimal_API.Persistance.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Minimal_API.Domain.Permission.PermissionModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ModifiedUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ebb87d24-0197-4842-9eab-f659740fe64a"),
+                            CreatedUtc = new DateTime(2024, 3, 7, 12, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            Name = "ReadUser"
+                        },
+                        new
+                        {
+                            Id = new Guid("a2386fdf-4c36-4cb5-a85b-c26d0c491fc4"),
+                            CreatedUtc = new DateTime(2024, 3, 7, 12, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            Name = "UpdateUser"
+                        },
+                        new
+                        {
+                            Id = new Guid("f59471c8-03a2-4c79-80b0-0505d9acfd43"),
+                            CreatedUtc = new DateTime(2024, 3, 7, 12, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            Name = "DeleteUser"
+                        });
+                });
+
+            modelBuilder.Entity("Minimal_API.Domain.Permission.UserPermission", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("UserId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("UserPermission", (string)null);
+                });
+
             modelBuilder.Entity("Minimal_API.Domain.Roles.RoleModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -86,6 +147,7 @@ namespace Minimal_API.Persistance.Migrations
             modelBuilder.Entity("Minimal_API.Domain.Users.UserModel", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedUtc")
@@ -146,6 +208,25 @@ namespace Minimal_API.Persistance.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("Minimal_API.Domain.Permission.UserPermission", b =>
+                {
+                    b.HasOne("Minimal_API.Domain.Permission.PermissionModel", "Permission")
+                        .WithMany("UserPermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Minimal_API.Domain.Users.UserModel", "User")
+                        .WithMany("UserPermissions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Minimal_API.Domain.Users.UserModel", b =>
                 {
                     b.HasOne("Minimal_API.Domain.Roles.RoleModel", "Role")
@@ -157,9 +238,19 @@ namespace Minimal_API.Persistance.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("Minimal_API.Domain.Permission.PermissionModel", b =>
+                {
+                    b.Navigation("UserPermissions");
+                });
+
             modelBuilder.Entity("Minimal_API.Domain.Roles.RoleModel", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Minimal_API.Domain.Users.UserModel", b =>
+                {
+                    b.Navigation("UserPermissions");
                 });
 #pragma warning restore 612, 618
         }

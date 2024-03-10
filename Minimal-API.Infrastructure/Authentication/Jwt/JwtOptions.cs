@@ -1,4 +1,4 @@
-﻿namespace Minimal_API.Infrastructure.Authentication;
+﻿namespace Minimal_API.Infrastructure.Authentication.Jwt;
 
 public class JwtOptions
 {

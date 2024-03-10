@@ -21,7 +21,7 @@ public class RoleRepository : IRoleRepository
     {
         var role = await _context.Set<RoleModel>()
             .AsNoTracking()
-            .SingleOrDefaultAsync(r => r.Id == ValueObjectId.Create<RoleId>(id), cancellationToken);
+            .SingleOrDefaultAsync(r => r.Id == id, cancellationToken);
 
         return role ?? Result.Failure<RoleModel>(ErrorTypes.Models.IdNotFound(id));
     }

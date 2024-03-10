@@ -3,7 +3,7 @@
 namespace Minimal_API.Domain.Users;
 
 public record UserDto(
-    UserId Id,
+    Guid Id,
     string Username,
     string Name,
     string LastName,

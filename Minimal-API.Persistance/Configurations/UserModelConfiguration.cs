@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Minimal_API.Domain.Permission;
 using Minimal_API.Domain.Primitives;
 using Minimal_API.Domain.Users;
 
@@ -12,12 +13,7 @@ public class UserModelConfiguration : IEntityTypeConfiguration<UserModel>
         builder.ToTable("Users");
         
         builder.HasKey(u => u.Id);
-
-        builder.Property(u => u.Id)
-            .HasConversion(
-                id => id.Value,
-                value => ValueObjectId.Create<UserId>(value)
-            );
+        
         builder.Property(u => u.Username)
             .IsRequired()
             .HasMaxLength(32);
@@ -47,5 +43,6 @@ public class UserModelConfiguration : IEntityTypeConfiguration<UserModel>
         builder.HasOne(u => u.Role)
             .WithMany(r => r.Users)
             .OnDelete(DeleteBehavior.NoAction);
+
     }
 }

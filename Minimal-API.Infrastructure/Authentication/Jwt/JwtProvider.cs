@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
@@ -7,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Minimal_API.Application.Interfaces;
 using Minimal_API.Domain.Users;
 
-namespace Minimal_API.Infrastructure.Authentication;
+namespace Minimal_API.Infrastructure.Authentication.Jwt;
 
 public class JwtProvider : IJwtProvider
 {

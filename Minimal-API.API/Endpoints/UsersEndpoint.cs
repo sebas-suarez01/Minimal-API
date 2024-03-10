@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Minimal_API.API.Requests;
 using Minimal_API.Application.Users.Commands.ChangeUserRole;
@@ -7,6 +8,7 @@ using Minimal_API.Application.Users.Queries.GetUserByEmail;
 using Minimal_API.Application.Users.Queries.GetUserById;
 using Minimal_API.Application.Users.Queries.GetUserByUsername;
 using Minimal_API.Domain.Roles.Shared;
+using Minimal_API.Infrastructure.Authentication;
 
 namespace Minimal_API.API.Endpoints;
 
@@ -16,8 +18,7 @@ public static class UsersEndpoints
     {
         app.MapGet("api/users", GetAllUsers)
             .WithName(nameof(GetAllUsers))
-            .WithDisplayName(nameof(GetAllUsers))
-            .RequireAuthorization();
+            .WithDisplayName(nameof(GetAllUsers));
         
         app.MapGet("api/users/{id:Guid}", GetUserById)
             .WithName(nameof(GetUserById))
@@ -35,7 +36,7 @@ public static class UsersEndpoints
             .WithName(nameof(ChangeUserRole))
             .WithDisplayName(nameof(ChangeUserRole));
     }
-
+    [Authorize(Roles = RoleMapping.USER)]
     public static async Task<IResult> GetAllUsers(ISender sender)
     {
         var query = new GetAllUsersQuery();
@@ -47,7 +48,6 @@ public static class UsersEndpoints
             : Results.Problem(statusCode: (int)result.Errors[0].HttpStatusCode,
                 detail: result.Errors[0].Description);
     }
-
     public static async Task<IResult> GetUserById(Guid id, ISender sender)
     {
         var query = new GetUserByIdQuery(id);

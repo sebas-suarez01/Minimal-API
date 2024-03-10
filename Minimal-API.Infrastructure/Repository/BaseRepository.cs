@@ -9,7 +9,6 @@ namespace Minimal_API.Infrastructure.Repository;
 
 public class BaseRepository<T, TId> : IRepository<T, TId>
     where T : Entity<TId>
-    where TId : ValueObjectId
 {
     protected readonly AgencyDbContext _context;
 
@@ -30,10 +29,10 @@ public class BaseRepository<T, TId> : IRepository<T, TId>
         return Result.Success();
     }
 
-    public async Task<Result<Guid>> CreateAsync(T model, CancellationToken cancellationToken = default)
+    public async Task<Result<TId>> CreateAsync(T model, CancellationToken cancellationToken = default)
     {
         await _context.Set<T>().AddAsync(model, cancellationToken);
 
-        return model.Id.Value;
+        return model.Id;
     }
 }

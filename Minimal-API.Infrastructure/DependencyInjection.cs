@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Minimal_API.Application.Interfaces;
 using Minimal_API.Infrastructure.Authentication;
+using Minimal_API.Infrastructure.Authentication.Jwt;
 using Minimal_API.Infrastructure.Repository;
 
 namespace Minimal_API.Infrastructure;

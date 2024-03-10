@@ -1,7 +1,6 @@
 ﻿namespace Minimal_API.Domain.Primitives;
 
 public class Entity<TId> : IEntity<TId>, IDomainEventContainer, IAuditableEntity, ISoftDeletable
-    where TId : ValueObjectId
 {
     protected readonly List<DomainEvent> _domainEvents = new();
     public TId Id { get; protected set; }

@@ -9,7 +9,7 @@ using Minimal_API.Persistance;
 
 namespace Minimal_API.Infrastructure.Repository;
 
-public class UserRepository : BaseRepository<UserModel, UserId>, IUserRepository
+public class UserRepository : BaseRepository<UserModel, Guid>, IUserRepository
 {
     public UserRepository(AgencyDbContext context) : base(context)
     {
@@ -34,7 +34,7 @@ public class UserRepository : BaseRepository<UserModel, UserId>, IUserRepository
     {
         var user = await _context.Set<UserModel>()
             .Include(u => u.Role)
-            .SingleOrDefaultAsync(u => u.Id == ValueObjectId.Create<UserId>(id), cancellationToken);
+            .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
 
         return user is not null
             ? new UserDto(
@@ -48,6 +48,7 @@ public class UserRepository : BaseRepository<UserModel, UserId>, IUserRepository
                 new RoleDto(user.Role.Name))
             : Result.Failure<UserDto>(ErrorTypes.Models.IdNotFound(id));
     }
+
     public async Task<Result<UserDto>> GetByUsernameAsync(string username,
         CancellationToken cancellationToken = default)
     {
@@ -68,6 +69,7 @@ public class UserRepository : BaseRepository<UserModel, UserId>, IUserRepository
                 new RoleDto(user.Role.Name))
             : Result.Failure<UserDto>(ErrorTypes.Models.UserNotFound(username));
     }
+
     public async Task<Result<UserDto>> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         var user = await _context.Set<UserModel>()
@@ -87,11 +89,12 @@ public class UserRepository : BaseRepository<UserModel, UserId>, IUserRepository
                 new RoleDto(user.Role.Name))
             : Result.Failure<UserDto>(ErrorTypes.Models.UserNotFound(email));
     }
-    public async Task<Result> ChangeRoleAsync(Guid id, string roleName)
+
+    public async Task<Result> ChangeRoleAsync(Guid id, string roleName, CancellationToken cancellationToken = default)
     {
         var user = await _context.Set<UserModel>()
             .Include(u => u.Role)
-            .SingleOrDefaultAsync(u => u.Id == ValueObjectId.Create<UserId>(id));
+            .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
 
         if (user is null)
         {
