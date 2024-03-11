@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Minimal_API.Application.Interfaces;
 using Minimal_API.Domain.Errors;
+using Minimal_API.Domain.Permission;
 using Minimal_API.Domain.Primitives;
 using Minimal_API.Domain.Roles;
 using Minimal_API.Domain.Shared;
@@ -111,5 +112,16 @@ public class UserRepository : BaseRepository<UserModel, Guid>, IUserRepository
         user.Role = role;
 
         return Result.Success();
+    }
+
+    public async Task<Result<List<string>>> GetPermissionsAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var permissions = await _context.Set<UserPermission>()
+            .Include(up => up.Permission)
+            .Where(up => up.UserId == id)
+            .Select(up => up.Permission.Name)
+            .ToListAsync(cancellationToken);
+
+        return permissions;
     }
 }

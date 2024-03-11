@@ -72,7 +72,7 @@ public class AuthRepository : IAuthRepository
             return Result.Failure<string>(ErrorTypes.Models.InvalidCredentials());
         }
 
-        var token = _jwtProvider.Generate(userDtoResult.Value);
+        var token = await _jwtProvider.Generate(userDtoResult.Value);
 
         return token;
     }

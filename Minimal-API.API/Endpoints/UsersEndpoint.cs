@@ -7,6 +7,7 @@ using Minimal_API.Application.Users.Queries.GetAllUsers;
 using Minimal_API.Application.Users.Queries.GetUserByEmail;
 using Minimal_API.Application.Users.Queries.GetUserById;
 using Minimal_API.Application.Users.Queries.GetUserByUsername;
+using Minimal_API.Domain.Enums;
 using Minimal_API.Domain.Roles.Shared;
 using Minimal_API.Infrastructure.Authentication;
 
@@ -36,7 +37,8 @@ public static class UsersEndpoints
             .WithName(nameof(ChangeUserRole))
             .WithDisplayName(nameof(ChangeUserRole));
     }
-    [Authorize(Roles = RoleMapping.USER)]
+    
+    [HasPermission(RoleMapping.USER, Permission.Read)]
     public static async Task<IResult> GetAllUsers(ISender sender)
     {
         var query = new GetAllUsersQuery();
@@ -48,6 +50,7 @@ public static class UsersEndpoints
             : Results.Problem(statusCode: (int)result.Errors[0].HttpStatusCode,
                 detail: result.Errors[0].Description);
     }
+    [Authorize(Roles = RoleMapping.USER)]
     public static async Task<IResult> GetUserById(Guid id, ISender sender)
     {
         var query = new GetUserByIdQuery(id);

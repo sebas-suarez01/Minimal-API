@@ -4,5 +4,5 @@ namespace Minimal_API.Application.Interfaces;
 
 public interface IJwtProvider
 {
-    public string Generate(UserDto user);
+    public Task<string> Generate(UserDto user);
 }

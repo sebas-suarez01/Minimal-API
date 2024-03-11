@@ -2,12 +2,8 @@
 
 public enum Permission
 {
-    ReadUser = 1,
-    UpdateUser = 2,
-    DeleteUser = 3,
-    ReadAdmin = 4,
-    UpdateAdmin = 5,
-    CreateAdmin = 6,
-    DeleteAdmin = 7,
-    CreateSuper = 8
+    Read = 1,
+    Update = 2,
+    Create = 3,
+    Delete = 4
 }
