@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Minimal_API.API.Common;
 using Minimal_API.API.Requests;
 using Minimal_API.Application.Users.Commands.ChangeUserRole;
 using Minimal_API.Application.Users.Queries.GetAllUsers;
@@ -57,10 +58,16 @@ public static class UsersEndpoints
 
         var result = await sender.Send(query);
         
-        return result.IsSuccess
-            ? Results.Ok(result.Value)
-            : Results.Problem(statusCode: (int)result.Errors[0].HttpStatusCode,
-                detail: result.Errors[0].Description);
+        if (result.IsSuccess)
+            return Results.Ok(result.Value);
+        
+        var extensions = Utils.ExtensionsReturnValues(
+            new KeyValuePair<string, object?>("user_id", id.ToString()));
+            
+        return Results.Problem(
+            statusCode: (int)result.Errors[0].HttpStatusCode,
+            detail: result.Errors[0].Description,
+            extensions: extensions);
     }
 
     public static async Task<IResult> GetUserByUsername(string username, ISender sender)
@@ -68,11 +75,18 @@ public static class UsersEndpoints
         var query = new GetUserByUsernameQuery(username);
 
         var result = await sender.Send(query);
+
+        if (result.IsSuccess)
+            return Results.Ok(result.Value);
         
-        return result.IsSuccess
-            ? Results.Ok(result.Value)
-            : Results.Problem(statusCode: (int)result.Errors[0].HttpStatusCode,
-                detail: result.Errors[0].Description);
+        var extensions = Utils.ExtensionsReturnValues(
+            new KeyValuePair<string, object?>("username", username));
+            
+        return Results.Problem(
+            statusCode: (int)result.Errors[0].HttpStatusCode,
+            detail: result.Errors[0].Description,
+            extensions: extensions);
+
     }
     public static async Task<IResult> GetUserByEmail(string email, ISender sender)
     {
@@ -80,10 +94,16 @@ public static class UsersEndpoints
 
         var result = await sender.Send(query);
         
-        return result.IsSuccess
-            ? Results.Ok(result.Value)
-            : Results.Problem(statusCode: (int)result.Errors[0].HttpStatusCode,
-                detail: result.Errors[0].Description);
+        if (result.IsSuccess)
+            return Results.Ok(result.Value);
+        
+        var extensions = Utils.ExtensionsReturnValues(
+            new KeyValuePair<string, object?>("email", email));
+            
+        return Results.Problem(
+            statusCode: (int)result.Errors[0].HttpStatusCode,
+            detail: result.Errors[0].Description,
+            extensions: extensions);
     }
 
     public static async Task<IResult> ChangeUserRole(Guid id, [FromBody]ChangeUserRoleRequest request, ISender sender)
@@ -92,9 +112,15 @@ public static class UsersEndpoints
 
         var result = await sender.Send(command);
         
-        return result.IsSuccess
-            ? Results.NoContent()
-            : Results.Problem(statusCode: (int)result.Errors[0].HttpStatusCode,
-                detail: result.Errors[0].Description);
+        if (result.IsSuccess)
+            return Results.NoContent();
+        
+        var extensions = Utils.ExtensionsReturnValues(
+            new KeyValuePair<string, object?>("user_id", id.ToString()));
+            
+        return Results.Problem(
+            statusCode: (int)result.Errors[0].HttpStatusCode,
+            detail: result.Errors[0].Description,
+            extensions: extensions);
     }
 }
