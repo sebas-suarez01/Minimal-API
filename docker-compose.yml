@@ -1,0 +1,33 @@
+﻿version: '3.4'
+
+services:
+  minimal-api.api:
+    image: minimalapi:latest
+    container_name: minapi
+    build:
+      context: .
+      dockerfile: Minimal-API.API/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:5000
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5000
+      - ASPNETCORE_HTTPS_PORTS=5001
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+  
+  minapi.postgres.db:
+    image: postgres:latest
+    container_name: minapi.db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "minimalapi"
+      POSTGRES_PASSWORD: "minimalapi"
+      POSTGRES_DB: "minimalapi_db"
+    volumes:
+      - ./.containers/minapi-db:/var/lib/postgresql/data
+      

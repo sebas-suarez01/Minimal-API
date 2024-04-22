@@ -102,7 +102,8 @@ public class UserRepository : BaseRepository<UserModel, Guid>, IUserRepository
             return Result.Failure(ErrorTypes.Models.IdNotFound(id));
         }
 
-        var role = await _context.Set<RoleModel>().SingleOrDefaultAsync(u => u.Name.ToLower() == roleName.ToLower());
+        var role = await _context.Set<RoleModel>()
+            .SingleOrDefaultAsync(u => u.Name.ToLower() == roleName.ToLower(), cancellationToken);
 
         if (role is null)
         {

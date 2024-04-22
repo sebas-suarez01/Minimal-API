@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Minimal_API.Application.Interfaces;
+using Minimal_API.Domain.Enums;
 using Minimal_API.Domain.Users;
 
 namespace Minimal_API.Infrastructure.Authentication.Jwt;
@@ -27,8 +28,8 @@ public class JwtProvider : IJwtProvider
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Iss, _options.Issuer),
             new Claim(JwtRegisteredClaimNames.Aud, _options.Audience),
-            new Claim(ClaimTypes.Role, user.Role.Name)
-
+            new Claim(ClaimTypes.Role, user.Role.Name),
+            new Claim(CustomClaims.Permissions, Permission.Read.ToString())
         };
         var permissions = await _userRepository.GetPermissionsAsync(user.Id);
 

@@ -39,7 +39,6 @@ public static class UsersEndpoints
             .WithDisplayName(nameof(ChangeUserRole));
     }
     
-    [HasPermission(RoleMapping.USER, Permission.Read)]
     public static async Task<IResult> GetAllUsers(ISender sender)
     {
         var query = new GetAllUsersQuery();
@@ -69,7 +68,8 @@ public static class UsersEndpoints
             detail: result.Errors[0].Description,
             extensions: extensions);
     }
-
+    
+    [HasPermission(RoleMapping.USER, Permission.Read)]
     public static async Task<IResult> GetUserByUsername(string username, ISender sender)
     {
         var query = new GetUserByUsernameQuery(username);
