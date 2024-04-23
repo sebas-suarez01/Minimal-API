@@ -10,7 +10,7 @@ public static class DependencyInjection
     {
         services.AddDbContext<AgencyDbContext>(opt
             => opt.UseNpgsql(configuration.GetConnectionString("AgencyDbConnection")));
-
+        
         return services;
     }
 }

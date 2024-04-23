@@ -1,12 +1,13 @@
 ﻿version: '3.4'
 
+networks:
+  minimal-api:
+
 services:
+  
   minimal-api.api:
-    image: minimalapi:latest
+    image: sebastiansuarez01/minimal-api:latest
     container_name: minimalapi
-    build:
-      context: .
-      dockerfile: Minimal-API.API/Dockerfile
     environment:
       - ASPNETCORE_URLS=http://+:5000
       - ASPNETCORE_ENVIRONMENT=Development
@@ -15,6 +16,11 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001"
+    depends_on:
+      - minimal-api.postgres.db
+    networks:
+      - minimal-api
+  
   
   minimal-api.postgres.db:
     image: postgres:latest
@@ -26,4 +32,6 @@ services:
       POSTGRES_PASSWORD: "minimalapi"
       POSTGRES_DB: "minimalapi_db"
     volumes:
-      - ./.containers/minapi-db:/var/lib/postgresql/data
+      - ./.containers/minimalapi-db:/var/lib/postgresql/data
+    networks:
+      - minimal-api
