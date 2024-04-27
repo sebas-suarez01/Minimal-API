@@ -8,6 +8,9 @@ services:
   minimal-api.api:
     image: sebastiansuarez01/minimal-api:latest
     container_name: minimalapi
+#    build:
+#      context: .
+#      dockerfile: Minimal-API.API/Dockerfile
     environment:
       - ASPNETCORE_URLS=http://+:5000
       - ASPNETCORE_ENVIRONMENT=Development

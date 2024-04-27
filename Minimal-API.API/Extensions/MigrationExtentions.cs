@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Minimal_API.Persistance;
 
-namespace Minimal_API.API.Extentions;
+namespace Minimal_API.API.Extensions;
 
-public static class MigrationExtentions
+public static class MigrationExtensions
 {
     public static void ApplyMigrations(this IApplicationBuilder app)
     {

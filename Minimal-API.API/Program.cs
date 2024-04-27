@@ -3,7 +3,7 @@ using Minimal_API.Application;
 using Minimal_API.Infrastructure;
 using Minimal_API.Persistance;
 using Minimal_API.API.Configuration;
-using Minimal_API.API.Extentions;
+using Minimal_API.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
