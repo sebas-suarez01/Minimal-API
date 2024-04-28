@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Minimal_API.Persistance;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Minimal_API.Persistance.Migrations
 {
     [DbContext(typeof(AgencyDbContext))]
-    partial class AgencyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240427183959_OrderMigration")]
+    partial class OrderMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace Minimal_API.Persistance.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Minimal_API.Domain.Items.ItemModel", b =>
+            modelBuilder.Entity("Minimal_API.Domain.LineItem.LineItemModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,6 +44,9 @@ namespace Minimal_API.Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
@@ -48,46 +54,12 @@ namespace Minimal_API.Persistance.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("ItemModel");
-                });
-
-            modelBuilder.Entity("Minimal_API.Domain.LineItems.LineItemModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedUtc")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("ModifiedUtc")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id");
-
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("ItemId", "OrderId")
-                        .IsUnique();
 
                     b.ToTable("LineItemModel");
                 });
 
-            modelBuilder.Entity("Minimal_API.Domain.Orders.OrderModel", b =>
+            modelBuilder.Entity("Minimal_API.Domain.Order.OrderModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -303,26 +275,18 @@ namespace Minimal_API.Persistance.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Minimal_API.Domain.LineItems.LineItemModel", b =>
+            modelBuilder.Entity("Minimal_API.Domain.LineItem.LineItemModel", b =>
                 {
-                    b.HasOne("Minimal_API.Domain.Items.ItemModel", "Item")
-                        .WithMany("ItemOrders")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Minimal_API.Domain.Orders.OrderModel", "Order")
-                        .WithMany("OrderItems")
+                    b.HasOne("Minimal_API.Domain.Order.OrderModel", "Order")
+                        .WithMany("LineItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Item");
-
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("Minimal_API.Domain.Orders.OrderModel", b =>
+            modelBuilder.Entity("Minimal_API.Domain.Order.OrderModel", b =>
                 {
                     b.HasOne("Minimal_API.Domain.Users.UserModel", "User")
                         .WithMany("Orders")
@@ -363,14 +327,9 @@ namespace Minimal_API.Persistance.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Minimal_API.Domain.Items.ItemModel", b =>
+            modelBuilder.Entity("Minimal_API.Domain.Order.OrderModel", b =>
                 {
-                    b.Navigation("ItemOrders");
-                });
-
-            modelBuilder.Entity("Minimal_API.Domain.Orders.OrderModel", b =>
-                {
-                    b.Navigation("OrderItems");
+                    b.Navigation("LineItems");
                 });
 
             modelBuilder.Entity("Minimal_API.Domain.Permission.PermissionModel", b =>

@@ -1,4 +1,5 @@
-﻿using Minimal_API.Domain.Permission;
+﻿using Minimal_API.Domain.Orders;
+using Minimal_API.Domain.Permission;
 using Minimal_API.Domain.Primitives;
 using Minimal_API.Domain.Roles;
 
@@ -30,8 +31,10 @@ public class UserModel : Entity<Guid>
     public string PasswordHash { get; private set; }
     public int? PhoneNumber { get; private set; }
     public bool EmailConfirmed { get; private set; }
+    public Guid RoleId { get; set; }
     public RoleModel Role { get; set; }
     public List<UserPermission> UserPermissions { get; set; }
+    public List<OrderModel> Orders { get; set; }
 
     public void ConfirmEmail()
     {

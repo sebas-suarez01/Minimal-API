@@ -45,5 +45,10 @@ public static partial class ErrorTypes
                 HttpStatusCode.Conflict,
                 ErrorCode.DuplicateUsername,
                 $"Duplicated Email {email}");
+        public static Error ItemNameNotFound(string name)
+            => new(
+                HttpStatusCode.NotFound,
+                ErrorCode.ItemNameNotFound,
+                $"Item Name: {name} not found");
     }
 }

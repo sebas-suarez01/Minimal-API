@@ -25,7 +25,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-//"Host=localhost;Database=agency_db;Username=postgres;Password=sebastian01"
+
 app.UseAuthentication();
 
 app.UseAuthorization();
@@ -33,5 +33,7 @@ app.UseAuthorization();
 // Endpoints
 app.MapUserEndpoints();
 app.MapAuthEndpoints();
+app.MapOrderEndpoints();
+app.MapItemEndpoints();
 
 app.Run();

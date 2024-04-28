@@ -19,7 +19,7 @@ public class BaseRepository<T, TId> : IRepository<T, TId>
 
     public async Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await _context.Set<T>().SingleOrDefaultAsync(cancellationToken);
+        var entity = await _context.Set<T>().SingleOrDefaultAsync(m=> m.Id.Equals(id), cancellationToken);
 
         if (entity is null)
             return Result.Failure(ErrorTypes.Models.IdNotFound(id));
