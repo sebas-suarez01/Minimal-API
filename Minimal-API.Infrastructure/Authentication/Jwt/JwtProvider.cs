@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Minimal_API.Application.Interfaces;
+using Minimal_API.Application.Interfaces.Repository;
 using Minimal_API.Domain.Enums;
 using Minimal_API.Domain.Users;
 

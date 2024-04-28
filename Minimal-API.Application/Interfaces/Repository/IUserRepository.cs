@@ -1,7 +1,7 @@
 ﻿using Minimal_API.Domain.Shared;
 using Minimal_API.Domain.Users;
 
-namespace Minimal_API.Application.Interfaces;
+namespace Minimal_API.Application.Interfaces.Repository;
 
 public interface IUserRepository : IRepository<UserModel, Guid>
 {

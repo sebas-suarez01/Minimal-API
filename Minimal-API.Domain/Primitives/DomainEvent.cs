@@ -1,6 +1,5 @@
-﻿namespace Minimal_API.Domain.Primitives;
+﻿using MediatR;
 
-public record DomainEvent(Guid Id)
-{
-    
-}
+namespace Minimal_API.Domain.Primitives;
+
+public record DomainEvent(Guid Id) : INotification;

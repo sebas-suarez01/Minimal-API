@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Minimal_API.Application.Interfaces;
+using Minimal_API.Application.Interfaces.Repository;
 using Minimal_API.Domain.Errors;
 using Minimal_API.Domain.Primitives;
 using Minimal_API.Domain.Shared;
@@ -32,7 +33,7 @@ public class BaseRepository<T, TId> : IRepository<T, TId>
     public async Task<Result<TId>> CreateAsync(T model, CancellationToken cancellationToken = default)
     {
         await _context.Set<T>().AddAsync(model, cancellationToken);
-
+        
         return model.Id;
     }
 }

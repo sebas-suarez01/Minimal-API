@@ -1,7 +1,7 @@
 ﻿using Minimal_API.Domain.Roles;
 using Minimal_API.Domain.Shared;
 
-namespace Minimal_API.Application.Interfaces;
+namespace Minimal_API.Application.Interfaces.Repository;
 
 public interface IRoleRepository
 {

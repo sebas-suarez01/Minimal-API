@@ -1,4 +1,5 @@
 ﻿using Minimal_API.Application.Interfaces;
+using Minimal_API.Application.Interfaces.Repository;
 using Minimal_API.Domain.Common;
 using Minimal_API.Domain.Errors;
 using Minimal_API.Domain.Roles.Shared;

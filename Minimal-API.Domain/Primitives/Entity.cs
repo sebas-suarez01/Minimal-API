@@ -8,7 +8,7 @@ public class Entity<TId> : IEntity<TId>, IDomainEventContainer, IAuditableEntity
     public DateTime? ModifiedUtc { get; set; }
 
     public ICollection<DomainEvent> GetDomainEvents() => _domainEvents.ToList();
-
+    public void RaiseDomainEvent(DomainEvent domainEvent) => _domainEvents.Add(domainEvent);
     public void ClearDomainEvents()
     {
         _domainEvents.Clear();

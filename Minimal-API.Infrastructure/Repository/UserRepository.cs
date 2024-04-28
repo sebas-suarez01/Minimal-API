@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Minimal_API.Application.Interfaces;
+using Minimal_API.Application.Interfaces.Repository;
 using Minimal_API.Domain.Errors;
 using Minimal_API.Domain.Permission;
 using Minimal_API.Domain.Primitives;

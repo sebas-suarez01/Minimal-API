@@ -1,5 +1,5 @@
 using Minimal_API.Application.Abstractions;
-using Minimal_API.Application.Interfaces;
+using Minimal_API.Application.Interfaces.Repository;
 using Minimal_API.Domain.Items;
 using Minimal_API.Domain.Shared;
 

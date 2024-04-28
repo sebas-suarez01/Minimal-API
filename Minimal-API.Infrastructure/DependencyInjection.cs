@@ -6,8 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Minimal_API.Application.Interfaces;
+using Minimal_API.Application.Interfaces.Repository;
 using Minimal_API.Infrastructure.Authentication;
 using Minimal_API.Infrastructure.Authentication.Jwt;
+using Minimal_API.Infrastructure.Cache;
+using Minimal_API.Infrastructure.Cache.Repository;
 using Minimal_API.Infrastructure.Repository;
 
 namespace Minimal_API.Infrastructure;
@@ -16,11 +19,18 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
+        services.AddScoped<ICacheService, CacheService>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IAuthRepository, AuthRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
-        services.AddScoped<IItemRepository, ItemRepository>();
+        services.AddScoped<ItemRepository>();
+        services.AddScoped<IItemRepository>(provider =>
+        {
+            var itemRepository = provider.GetService<ItemRepository>();
+
+            return new CacheItemRepository(itemRepository!, provider.GetService<ICacheService>()!);
+        });
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
