@@ -22,13 +22,7 @@ public class AddItemCommandHandler : ICommandHandler<AddItemCommand, Guid>
     {
         var item = ItemModel.Create(request.Name, request.Price);
         var itemIdResult = await _repository.CreateAsync(item, cancellationToken);
-
-        if (itemIdResult.IsFailure)
-            return Result.Failure<Guid>(itemIdResult.Errors);
         
-        await _publisher.Publish(new ItemCreatedDomainEvent(new Guid(), itemIdResult.Value, request.Name, request.Price),
-            cancellationToken);
-        
-        return itemIdResult.Value;
+        return itemIdResult;
     }
 }

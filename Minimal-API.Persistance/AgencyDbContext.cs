@@ -3,6 +3,7 @@ using Minimal_API.Domain.Permission;
 using Minimal_API.Domain.Primitives;
 using Minimal_API.Domain.Users;
 using Minimal_API.Persistance.Configurations;
+using Minimal_API.Persistance.Interceptors;
 using Minimal_API.Persistance.Seeds;
 
 namespace Minimal_API.Persistance;

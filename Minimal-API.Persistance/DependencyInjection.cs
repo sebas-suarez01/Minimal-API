@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minimal_API.Persistance.Interceptors;
@@ -11,9 +12,12 @@ public static class DependencyInjection
     {
         services.AddDbContext<AgencyDbContext>((sp, opt)=>
         {
+            var publisherService = sp.GetService<IPublisher>();
+
             var publishDomainEventInterceptor = sp.GetService<PublishDomainEventInterceptor>();
+            
             opt.UseNpgsql(configuration.GetConnectionString("AgencyDbConnection"))
-                .AddInterceptors(publishDomainEventInterceptor!);
+                .AddInterceptors(new PublishDomainEventInterceptor(publisherService));
         });
         
         return services;
