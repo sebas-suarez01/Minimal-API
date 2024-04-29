@@ -39,6 +39,21 @@ public class DistributedCacheService : IDistributedCacheService
         CacheKeys.TryAdd(key, false);
     }
 
+    public async Task<T?> GetOrSet<T>(string key, Func<Task<T>> factory, CancellationToken cancellationToken = default)
+        where T:class
+    {
+        T? cachedValue = await GetAsync<T>(key, cancellationToken);
+
+        if (cachedValue is not null)
+            return cachedValue;
+
+        cachedValue = await factory();
+
+        await SetAsync(key, cachedValue, cancellationToken);
+
+        return cachedValue;
+    }
+
     public async Task RemoveAsync(string key, CancellationToken cancellationToken = default)
     {
         await _distributedCache.RemoveAsync(key, cancellationToken);

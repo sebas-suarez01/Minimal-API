@@ -17,24 +17,35 @@ public class GetAllOrdersQueryHandler : IQueryHandler<GetAllOrdersQuery, IEnumer
         _distributedCache = distributedCache;
     }
 
-    public async Task<Result<IEnumerable<OrderDto>>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken=default)
+    public async Task<Result<IEnumerable<OrderDto>>> Handle(GetAllOrdersQuery request,
+        CancellationToken cancellationToken = default)
     {
+        // var key = "orders";
+        //
+        // var ordersCached = await _distributedCache.GetAsync<IEnumerable<OrderDto>>(key, cancellationToken);
+        //
+        // if (ordersCached is not null)
+        // {
+        //     return Result.Create(ordersCached);
+        // }
+        //
+        // var orders = await _repository.GetAllAsync(cancellationToken);
+        //
+        // if(orders.IsFailure)
+        //     return Result.Failure<IEnumerable<OrderDto>>(orders.Errors);
+        //
+        // await _distributedCache.SetAsync(key, orders.Value, cancellationToken);
+        //
+        // return Result.Create(orders.Value);
         var key = "orders";
+        return (await _distributedCache.GetOrSet(
+            key,
+            async () =>
+            {
+                var orders = await _repository.GetAllAsync(cancellationToken);
 
-        var ordersCached = await _distributedCache.GetAsync<IEnumerable<OrderDto>>(key, cancellationToken);
-
-        if (ordersCached is not null)
-        {
-            return Result.Create(ordersCached);
-        }
-        
-        var orders = await _repository.GetAllAsync(cancellationToken);
-        
-        if(orders.IsFailure)
-            return Result.Failure<IEnumerable<OrderDto>>(orders.Errors);
-
-        await _distributedCache.SetAsync(key, orders.Value, cancellationToken);
-
-        return Result.Create(orders.Value);
+                return orders.Value.ToList();
+            },
+            cancellationToken))!;
     }
 }
