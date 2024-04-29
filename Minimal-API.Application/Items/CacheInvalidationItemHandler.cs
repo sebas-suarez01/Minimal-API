@@ -8,11 +8,11 @@ namespace Minimal_API.Application.Items;
 
 public class CacheInvalidationItemHandler : INotificationHandler<ItemCreatedDomainEvent>
 {
-    private readonly ICacheService _cache;
+    private readonly IMemoryCacheService _memoryCache;
 
-    public CacheInvalidationItemHandler(ICacheService cache)
+    public CacheInvalidationItemHandler(IMemoryCacheService memoryCache)
     {
-        _cache = cache;
+        _memoryCache = memoryCache;
     }
 
     public Task Handle(ItemCreatedDomainEvent notification, CancellationToken cancellationToken)
@@ -24,6 +24,6 @@ public class CacheInvalidationItemHandler : INotificationHandler<ItemCreatedDoma
     {
         var key = $"{nameof(GetAllItemsQuery)}-{nameof(ItemModel)}";
 
-        await _cache.RemoveAsync(key);
+        await _memoryCache.RemoveAsync(key);
     }
 }

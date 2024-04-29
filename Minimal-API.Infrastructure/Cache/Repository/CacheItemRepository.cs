@@ -12,12 +12,12 @@ namespace Minimal_API.Infrastructure.Cache.Repository;
 public class CacheItemRepository : IItemRepository
 {
     private readonly ItemRepository _decorated;
-    private readonly ICacheService _cache;
+    private readonly IMemoryCacheService _memoryCache;
 
-    public CacheItemRepository(ItemRepository decorated, ICacheService cache)
+    public CacheItemRepository(ItemRepository decorated, IMemoryCacheService memoryCache)
     {
         _decorated = decorated;
-        _cache = cache;
+        _memoryCache = memoryCache;
     }
 
     public Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
@@ -45,7 +45,7 @@ public class CacheItemRepository : IItemRepository
     public async Task<Result<IEnumerable<ItemDto>>> GetAllAsync(CancellationToken cancellationToken)
     {
         var key = $"{nameof(GetAllItemsQuery)}-{nameof(ItemModel)}";
-        return await _cache.GetOrCreateAsync(
+        return await _memoryCache.GetOrCreateAsync(
             key, 
             _=>_decorated.GetAllAsync(cancellationToken),
             TimeSpan.FromSeconds(100),

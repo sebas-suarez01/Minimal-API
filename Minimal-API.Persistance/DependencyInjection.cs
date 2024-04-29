@@ -17,7 +17,7 @@ public static class DependencyInjection
             var publishDomainEventInterceptor = sp.GetService<PublishDomainEventInterceptor>();
             
             opt.UseNpgsql(configuration.GetConnectionString("AgencyDbConnection"))
-                .AddInterceptors(new PublishDomainEventInterceptor(publisherService));
+                .AddInterceptors(new PublishDomainEventInterceptor(publisherService!));
         });
         
         return services;

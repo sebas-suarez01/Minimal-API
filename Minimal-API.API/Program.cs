@@ -14,7 +14,7 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.AddPersistance(builder.Configuration);
-builder.Services.AddMemoryCache();
+builder.Services.AddCacheConfiguration(builder.Configuration);
 
 var app = builder.Build();
 

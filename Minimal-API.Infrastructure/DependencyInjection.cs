@@ -19,7 +19,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        services.AddScoped<ICacheService, CacheService>();
+        services.AddSingleton<IMemoryCacheService, MemoryCacheService>();
+        services.AddSingleton<IDistributedCacheService, DistributedCacheService>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IAuthRepository, AuthRepository>();
@@ -29,7 +30,7 @@ public static class DependencyInjection
         {
             var itemRepository = provider.GetService<ItemRepository>();
 
-            return new CacheItemRepository(itemRepository!, provider.GetService<ICacheService>()!);
+            return new CacheItemRepository(itemRepository!, provider.GetService<IMemoryCacheService>()!);
         });
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();

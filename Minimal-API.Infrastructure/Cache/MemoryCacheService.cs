@@ -3,12 +3,12 @@ using Minimal_API.Application.Interfaces;
 
 namespace Minimal_API.Infrastructure.Cache;
 
-public class CacheService : ICacheService
+public class MemoryCacheService : IMemoryCacheService
 {
     private static readonly TimeSpan DefaultExpiration=TimeSpan.FromMinutes(1);
     private readonly IMemoryCache _memoryCache;
 
-    public CacheService(IMemoryCache memoryCache)
+    public MemoryCacheService(IMemoryCache memoryCache)
     {
         _memoryCache = memoryCache;
     }

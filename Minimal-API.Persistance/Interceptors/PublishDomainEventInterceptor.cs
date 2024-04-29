@@ -33,10 +33,10 @@ public class PublishDomainEventInterceptor : SaveChangesInterceptor
                     return domainEvents;
                 })
                 .ToList();
-            foreach (var domainEvent in domainEvents)
-            {
-                await _publisher.Publish(domainEvent, cancellationToken);
-            }
+
+            var tasks = domainEvents.Select(de => _publisher.Publish(de, cancellationToken));
+
+            await Task.WhenAll(tasks);
         }
         
         return await base.SavingChangesAsync(eventData, result, cancellationToken);
