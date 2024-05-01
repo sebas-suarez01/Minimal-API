@@ -19,7 +19,7 @@ public class GlobalExceptionMiddleware
         }
         catch (Exception e)
         {
-            _logger.LogInformation($"{e.Message}");
+            _logger.LogError($"{e.Message}");
             await Results.Problem(
                     title: "Some error occurred", 
                     statusCode: StatusCodes.Status500InternalServerError,
