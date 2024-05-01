@@ -31,6 +31,9 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+// Middlewares
+app.UseTiming();
+
 // Endpoints
 app.MapUserEndpoints();
 app.MapAuthEndpoints();

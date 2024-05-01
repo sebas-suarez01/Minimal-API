@@ -25,14 +25,20 @@ public class DistributedCacheService : IDistributedCacheService
             return null;
         }
 
-        T? value = JsonConvert.DeserializeObject<T>(cacheValue);
+        T? value = JsonConvert.DeserializeObject<T>(cacheValue, new JsonSerializerSettings()
+        {
+            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
+        });
 
         return value;
     }
 
     public async Task SetAsync<T>(string key, T value, CancellationToken cancellationToken = default)
     {
-        var cacheValue = JsonConvert.SerializeObject(value);
+        var cacheValue = JsonConvert.SerializeObject(value, new JsonSerializerSettings()
+        {
+            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
+        });
 
         await _distributedCache.SetStringAsync(key, cacheValue, cancellationToken);
 
