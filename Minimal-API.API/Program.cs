@@ -32,6 +32,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Middlewares
+app.UseGlobalExceptionHandler();
 app.UseTiming();
 
 // Endpoints
