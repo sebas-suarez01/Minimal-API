@@ -4,7 +4,7 @@ namespace Minimal_API.API.Extensions;
 
 public static class ErrorHandlingExtensions
 {
-    public static void ConfigureErrorHandler(this IApplicationBuilder app)
+    public static void ConfigureExceptionHandler(this IApplicationBuilder app)
     {
         app.Run(async context =>
         {
