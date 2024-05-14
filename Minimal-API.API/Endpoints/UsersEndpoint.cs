@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.OpenApi.Extensions;
 using Minimal_API.API.Common;
 using Minimal_API.API.Requests;
 using Minimal_API.Application.Users.Commands.ChangeUserRole;
@@ -39,6 +41,7 @@ public static class UsersEndpoints
             .WithDisplayName(nameof(ChangeUserRole));
     }
     
+    [EnableRateLimiting("FixedWindowsForUsers")]
     public static async Task<IResult> GetAllUsers(ISender sender)
     {
         var query = new GetAllUsersQuery();
@@ -50,6 +53,7 @@ public static class UsersEndpoints
             : Results.Problem(statusCode: (int)result.Errors[0].HttpStatusCode,
                 detail: result.Errors[0].Description);
     }
+    
     [Authorize(Roles = RoleMapping.USER)]
     public static async Task<IResult> GetUserById(Guid id, ISender sender)
     {
