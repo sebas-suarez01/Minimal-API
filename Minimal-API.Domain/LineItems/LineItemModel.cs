@@ -27,7 +27,7 @@ public class LineItemModel : Entity<Guid>
     {
         return new LineItemModel()
         {
-            Id = new Guid(),
+            Id = Guid.NewGuid(),
             ItemId = itemId,
             OrderId = orderId,
             Amount = amount

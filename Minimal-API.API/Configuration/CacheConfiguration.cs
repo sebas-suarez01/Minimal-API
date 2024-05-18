@@ -8,7 +8,7 @@ public static class CacheConfiguration
         services.AddDistributedMemoryCache();
         services.AddStackExchangeRedisCache(redisOpt =>
         {
-            var connectionString = configuration.GetConnectionString("Redis");
+            var connectionString = configuration.GetConnectionString("RedisDocker");
             redisOpt.Configuration = connectionString;
         });
 

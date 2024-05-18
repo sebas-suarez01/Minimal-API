@@ -6,11 +6,12 @@ networks:
 services:
   
   minimal-api.api:
-    image: sebastiansuarez01/minimal-api:latest
+    # image: sebastiansuarez01/minimal-api:latest
+    image: minimal-api:latest
     container_name: minimalapi
-#    build:
-#      context: .
-#      dockerfile: Minimal-API.API/Dockerfile
+    build:
+      context: .
+      dockerfile: Minimal-API.API/Dockerfile
     environment:
       - ASPNETCORE_URLS=http://+:5000
       - ASPNETCORE_ENVIRONMENT=Development
@@ -21,6 +22,7 @@ services:
       - "5001:5001"
     depends_on:
       - minimal-api.postgres.db
+      - minimal-api.cache.redis
     networks:
       - minimal-api
   
@@ -38,3 +40,12 @@ services:
       - ./.containers/minimalapi-db:/var/lib/postgresql/data
     networks:
       - minimal-api
+  
+  minimal-api.cache.redis:
+    image: redis
+    container_name: minimal-api.cache
+    ports:
+      - 6379:6379
+    networks:
+      - minimal-api
+  

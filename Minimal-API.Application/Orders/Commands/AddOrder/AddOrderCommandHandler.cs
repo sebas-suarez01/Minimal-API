@@ -20,7 +20,7 @@ public class AddOrderCommandHandler : ICommandHandler<AddOrderCommand, Guid>
     public async Task<Result<Guid>> Handle(AddOrderCommand request, CancellationToken cancellationToken)
     {
         var lineItems = new List<LineItemModel>();
-        var orderId = new Guid();
+        var orderId = Guid.NewGuid();
         decimal totalPrice = 0;
         
         foreach (var itemRequest in request.OrderItems)
