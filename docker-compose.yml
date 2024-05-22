@@ -30,8 +30,6 @@ services:
   minimal-api.postgres.db:
     image: postgres:latest
     container_name: minimalapi.db
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: "minimalapi"
       POSTGRES_PASSWORD: "minimalapi"
