@@ -1,0 +1,33 @@
+ # Ignore all bin and obj folders
+ bin/
+ obj/
+
+ # Ignore user-specific files
+ *.user
+
+ # Ignore Visual Studio temporary files
+ *.suo
+ *.userprefs
+
+ # Ignore Git related files
+.git/
+
+ # Ignore IDE specific files (e.g., Visual Studio)
+ [Ii]de[Oo][Mm][Pp][Ll][Aa][Tt][Ee][Ss].tmp
+ *.log
+ *.bak
+ *.swp
+ *.opendb
+ *.sln.docstates
+
+ # Exclude node_modules if you're using npm packages
+ node_modules/
+
+ # Exclude.vscode folder if you have VS Code settings
+.vscode/
+
+ # Exclude.idea folder if you're using JetBrains Rider
+.idea/
+
+ # Exclude.env file if you have environment variables
+.env

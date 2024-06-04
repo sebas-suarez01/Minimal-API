@@ -11,7 +11,7 @@ services:
     container_name: minimalapi
     build:
       context: .
-      dockerfile: Minimal-API.API/Dockerfile
+      dockerfile: /Dockerfile
     environment:
       - ASPNETCORE_URLS=http://+:5000
       - ASPNETCORE_ENVIRONMENT=Development
@@ -26,9 +26,8 @@ services:
     networks:
       - minimal-api
   
-  
   minimal-api.postgres.db:
-    image: postgres:latest
+    image: postgres:16
     container_name: minimalapi.db
     environment:
       POSTGRES_USER: "minimalapi"
@@ -40,7 +39,7 @@ services:
       - minimal-api
   
   minimal-api.cache.redis:
-    image: redis
+    image: redis:7
     container_name: minimal-api.cache
     ports:
       - 6379:6379

@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHostedService<BackgroundServiceCountItems>();
 
+builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 builder.Services.AddAuthentication(builder.Configuration);

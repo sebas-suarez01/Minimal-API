@@ -1,0 +1,91 @@
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: postgres-deployment
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: postgresdb
+#  template:
+#    metadata:
+#      labels:
+#        app: postgresdb
+#    spec:
+#      containers:
+#        - name: postgresdb
+#          image: 'postgres:16'
+#          imagePullPolicy: IfNotPresent
+#          env:
+##            - name: POSTGRES_PASSWORD
+##              valueFrom:
+##                secretKeyRef:
+##                  name: postgres-secret
+##                  key: postgres_password
+##            - name: POSTGRES_HOST_AUTH_METHOD
+##              value: "trust"
+##            - name: POSTGRES_DB
+##              valueFrom:
+##                secretKeyRef:
+##                  name: postgres-secret
+##                  key: postgres_db
+##                configMapKeyRef:
+##                  name: postgres-config
+##                  key: postgres_db
+#            - name: PGDATA
+#              value: /var/lib/postgresql/data/pgdata
+#          envFrom:
+#            - configMapRef:
+#                name: postgres-config
+##            - secretRef:
+##                name: postgres-secret
+#          volumeMounts:
+#            - mountPath: /var/lib/data/postgresql
+#              name: postgresdata
+#      volumes:
+#        - name: postgresdata
+#          persistentVolumeClaim:
+#            claimName: postgres-volume-claim
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresdb
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: postgresdb
+  template:
+    metadata:
+      labels:
+        app: postgresdb
+    spec:
+      containers:
+
+        - name: postgresdb
+          image: postgres
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: db-secrets-net
+          volumeMounts:
+            - mountPath: /var/lib/postgres/data
+              name: db-data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: db-persistent-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresdb
+  labels:
+    app: postgresdb
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: postgresdb
+  type: NodePort
