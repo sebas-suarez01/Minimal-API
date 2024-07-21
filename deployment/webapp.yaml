@@ -101,6 +101,10 @@ spec:
               value: "5000"
             - name: ASPNETCORE_HTTPS_PORTS
               value: "5001"
+            - name: REDIS_HOST
+              value: "redis-service"
+            - name: REDIS_PORT
+              value: "6379"
 
 ---
 apiVersion: v1

@@ -7,7 +7,7 @@ services:
   
   minimal-api.api:
     # image: sebastiansuarez01/minimal-api:latest
-    image: minimal-api:latest
+    image: sebastiansuarez01/minimal-api:v5
     container_name: minimalapi
     build:
       context: .
